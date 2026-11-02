@@ -260,4 +260,46 @@ public class OperatonCalledProcessCaseTest {
 
   }
 
+
+  @Test
+  @DisplayName("A suspension reports the tasks of the suspended instance only, and a workflow only for a case")
+  public void aSuspensionStaysWithTheInstanceWhichWasSuspended() {
+
+    final var caller = aStartedCallingCase("Wanda");
+    final var callerMarker = marker(CaseCallingWorkflowService.CALLER, "Wanda");
+    final var ownMarker = marker(
+        OwnCaseWorkflowService.OWN_CASE, OwnCaseWorkflowService.customerOf(String.valueOf(caller.getId())));
+    final var callerId = idOf(CockpitServer.awaitRequest("/workflow/created", callerMarker), "workflowId");
+    final var stepTaskId = idOf(CockpitServer.awaitRequest("/usertask/created", callerMarker), "userTaskId");
+    final var ownId = idOf(CockpitServer.awaitRequest("/workflow/created", ownMarker), "workflowId");
+    final var ownTaskId = idOf(CockpitServer.awaitRequest("/usertask/created", ownMarker), "userTaskId");
+    final var stepId = instanceOf(CaseCallingWorkflowService.CALLED_STEP_PROCESS_ID, String.valueOf(caller.getId()));
+
+    // the engine does not suspend a called instance together with its caller, so its tasks can
+    // still be worked on and are not reported
+    CockpitServer.forgetRequests();
+    engine.getRuntimeService().suspendProcessInstanceById(callerId);
+    CockpitServer.awaitAnyRequest("/workflow/%s/suspended".formatted(callerId));
+    CockpitServer.awaitQuiet();
+    assertEquals(List.of(), CockpitServer.matching("/usertask/%s/suspended".formatted(stepTaskId)));
+    assertEquals(List.of(), CockpitServer.matching("/usertask/%s/suspended".formatted(ownTaskId)));
+    assertEquals(List.of(), CockpitServer.matching("/workflow/%s/suspended".formatted(ownId)));
+
+    // a step reports its task, which belongs to the caller's case. The case itself is not
+    // suspended by it
+    CockpitServer.forgetRequests();
+    engine.getRuntimeService().suspendProcessInstanceById(stepId);
+    CockpitServer.awaitAnyRequest("/usertask/%s/suspended".formatted(stepTaskId));
+    CockpitServer.awaitQuiet();
+    assertEquals(List.of(), CockpitServer.matching("/workflow/%s/suspended".formatted(stepId)));
+    assertEquals(List.of(), CockpitServer.matching("/workflow/%s/suspended".formatted(callerId)));
+
+    // a called process with an aggregate of its own is a case of its own
+    CockpitServer.forgetRequests();
+    engine.getRuntimeService().suspendProcessInstanceById(ownId);
+    CockpitServer.awaitAnyRequest("/usertask/%s/suspended".formatted(ownTaskId));
+    CockpitServer.awaitAnyRequest("/workflow/%s/suspended".formatted(ownId));
+
+  }
+
 }
