@@ -17,7 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.operaton.bpm.engine.ProcessEngine;
-import org.operaton.bpm.engine.ProcessEngineException;
 import org.operaton.bpm.engine.batch.Batch;
 import org.operaton.bpm.engine.repository.ProcessDefinition;
 import org.operaton.bpm.engine.task.Task;
@@ -414,7 +413,7 @@ public class OperatonSuspensionTest {
 
   /**
    * Runs the jobs of one job definition, next to the job executor. Whichever of the two takes a
-   * job first runs it. The other one finds it gone, which is no failure here.
+   * job first runs it. The other one finds it gone, or half gone, which is no failure here.
    */
   private void runTheJobsOf(
       final String jobDefinitionId) {
@@ -429,8 +428,13 @@ public class OperatonSuspensionTest {
           .forEach(job -> {
             try {
               engine.getManagementService().executeJob(job.getId());
-            } catch (final ProcessEngineException e) {
-              // the job executor ran it first
+            } catch (final RuntimeException e) {
+              // The job executor ran it first. Depending on how far it got, the engine throws a
+              // ProcessEngineException or a NullPointerException for the configuration it
+              // already deleted. Only a job which is still there failed for real.
+              if (engine.getManagementService().createJobQuery().jobId(job.getId()).count() > 0) {
+                throw e;
+              }
             }
           });
     }
