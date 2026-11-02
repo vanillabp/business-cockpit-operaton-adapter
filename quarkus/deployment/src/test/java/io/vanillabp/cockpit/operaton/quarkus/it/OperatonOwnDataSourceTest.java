@@ -37,12 +37,11 @@ import jakarta.transaction.UserTransaction;
  * from the engine it built. This test pins the answer for an engine with a data source of its own,
  * because that answer decides where the entry goes.
  * <p>
- * Neither data source of this application is configured as XA, and that is part of what this test
- * shows. XA was the price of the old answer, where the entry joined the engine's JTA transaction.
- * There, a second data source is only enlisted as an XA resource, so without XA the entry failed
- * while the engine worked. Now the entry has a transaction of its own. It enlists nothing of the
- * engine and needs nothing declared. An application may still declare its data sources as XA for
- * reasons of its own, and that changes nothing here.
+ * The engine's data source is an XA data source, because the Operaton adapter asks for it. Its
+ * engine shares its transactions with the application's data source, and at most one of the two
+ * may be without XA. Otherwise the boot stops. This extension asks for nothing on top. The entry
+ * has a transaction of its own and enlists nothing of the engine. XA was the price of an older
+ * answer, where the entry joined the engine's JTA transaction.
  */
 @ExtendWith(SuppressOutputExtension.class)
 @SuppressOutputExtension.SuppressBackgroundOutput

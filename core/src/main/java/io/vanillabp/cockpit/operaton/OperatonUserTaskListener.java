@@ -1,5 +1,7 @@
 package io.vanillabp.cockpit.operaton;
 
+import java.time.OffsetDateTime;
+
 import org.operaton.bpm.engine.delegate.DelegateTask;
 import org.operaton.bpm.engine.delegate.TaskListener;
 
@@ -48,6 +50,40 @@ public class OperatonUserTaskListener implements TaskListener {
       return;
     }
     events.reportUserTask(delegateTask, bpmnTaskId, taskDefinition, kind);
+
+  }
+
+  /**
+   * Reports that the process instance of the task was suspended or activated again. The engine
+   * calls no task listener for that, so the history handler of the instance calls this for each
+   * open task. The listener adds what it knows about its element.
+   *
+   * @param task An open task of the process instance
+   * @param kind {@link UserTaskEventKind#SUSPENDED} or {@link UserTaskEventKind#ACTIVATED}
+   * @param timestamp When the engine changed the state of the process instance
+   * @param suspendedBy The user signed in to the engine, or <code>null</code> where nobody is
+   */
+  public void reportSuspension(
+      final DelegateTask task,
+      final UserTaskEventKind kind,
+      final OffsetDateTime timestamp,
+      final String suspendedBy) {
+
+    events.reportUserTaskSuspension(task, bpmnTaskId, taskDefinition, kind, timestamp, suspendedBy);
+
+  }
+
+  /**
+   * Tells whether this listener reports to the events of one engine. Each engine parses its
+   * models with listeners of its own.
+   *
+   * @param engineEvents The events of the engine asking
+   * @return Whether this listener reports there
+   */
+  boolean reportsTo(
+      final OperatonCockpitEvents engineEvents) {
+
+    return events == engineEvents;
 
   }
 

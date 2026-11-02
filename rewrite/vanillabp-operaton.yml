@@ -119,6 +119,9 @@ recipeList:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7ProcessVersionTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonProcessVersionTest
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7SuspensionTest
+      newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonSuspensionTest
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7TwoAdapterIdsTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonTwoAdapterIdsTest
   - org.openrewrite.java.ChangeType:
