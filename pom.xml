@@ -38,7 +38,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <version.java>21</version.java>
     <maven.compiler.release>21</maven.compiler.release>
-    <jacoco.version>0.8.15</jacoco.version>
+    <jacoco.version>0.8.16</jacoco.version>
     <lombok.version>1.18.48</lombok.version>
     <adapter-platform.version>2.0.0-SNAPSHOT</adapter-platform.version>
     <!-- the VanillaBP Operaton adapter this extension plugs into: it names the processing

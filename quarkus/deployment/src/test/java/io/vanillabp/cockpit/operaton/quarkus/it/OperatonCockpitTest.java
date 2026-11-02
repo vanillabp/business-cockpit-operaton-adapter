@@ -288,6 +288,44 @@ public class OperatonCockpitTest {
   }
 
   @Test
+  @DisplayName("Suspending and activating the workflow reports the task and the workflow, with the person who did it")
+  public void aSuspensionIsReported() throws Exception {
+
+    final var aggregate = aStartedWorkflow("Ulla");
+    final var userTaskId = userTaskIdOf(aggregate);
+    final var workflowId = workflowIdOf(aggregate);
+    final var identity = engine().getIdentityService();
+
+    // the user belongs to the tenant of the workflow module, or the engine refuses the call
+    identity.setAuthentication("ulla", null, List.of(MODULE_ID));
+    try {
+      engine().getRuntimeService().suspendProcessInstanceById(workflowId);
+    } finally {
+      identity.clearAuthentication();
+    }
+    assertTrue(
+        CockpitServer.awaitAnyRequest("/usertask/%s/suspended".formatted(userTaskId)).body()
+            .contains("\"initiator\":\"ulla\""));
+    assertTrue(
+        CockpitServer.awaitAnyRequest("/workflow/%s/suspended".formatted(workflowId)).body()
+            .contains("\"initiator\":\"ulla\""));
+
+    identity.setAuthentication("viktor", null, List.of(MODULE_ID));
+    try {
+      engine().getRuntimeService().activateProcessInstanceById(workflowId);
+    } finally {
+      identity.clearAuthentication();
+    }
+    assertTrue(
+        CockpitServer.awaitAnyRequest("/usertask/%s/activated".formatted(userTaskId)).body()
+            .contains("\"initiator\":\"viktor\""));
+    assertTrue(
+        CockpitServer.awaitAnyRequest("/workflow/%s/activated".formatted(workflowId)).body()
+            .contains("\"initiator\":\"viktor\""));
+
+  }
+
+  @Test
   @DisplayName("An operator changing the task through the engine API alone still produces an update")
   public void aManualOperationIsReported() throws Exception {
 
