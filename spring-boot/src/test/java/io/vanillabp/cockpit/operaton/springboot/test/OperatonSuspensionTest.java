@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.operaton.bpm.engine.OptimisticLockingException;
 import org.operaton.bpm.engine.ProcessEngine;
 import org.operaton.bpm.engine.batch.Batch;
 import org.operaton.bpm.engine.repository.ProcessDefinition;
@@ -413,7 +414,8 @@ public class OperatonSuspensionTest {
 
   /**
    * Runs the jobs of one job definition, next to the job executor. Whichever of the two takes a
-   * job first runs it. The other one finds it gone, or half gone, which is no failure here.
+   * job first runs it. The other one finds it gone, half gone or still busy, which is no failure
+   * here.
    */
   private void runTheJobsOf(
       final String jobDefinitionId) {
@@ -428,6 +430,11 @@ public class OperatonSuspensionTest {
           .forEach(job -> {
             try {
               engine.getManagementService().executeJob(job.getId());
+            } catch (final OptimisticLockingException e) {
+              // The job executor ran the same job at the same moment and changed a row which
+              // this run wanted to change too. So the job may still be there when we ask, even
+              // though nothing failed for real. The loop looks at the job again on its next
+              // round and gives up only after its deadline.
             } catch (final RuntimeException e) {
               // The job executor ran it first. Depending on how far it got, the engine throws a
               // ProcessEngineException or a NullPointerException for the configuration it
