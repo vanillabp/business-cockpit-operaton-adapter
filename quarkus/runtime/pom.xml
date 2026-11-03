@@ -4,8 +4,9 @@
 
   <parent>
     <groupId>io.vanillabp.businesscockpit</groupId>
-    <artifactId>businesscockpit-operaton-adapter-quarkus-parent</artifactId>
+    <artifactId>businesscockpit-operaton-adapter-parent</artifactId>
     <version>0.9.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>businesscockpit-operaton-adapter-quarkus</artifactId>
