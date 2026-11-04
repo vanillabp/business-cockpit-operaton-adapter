@@ -7,7 +7,7 @@
     io.vanillabp:release-parent. A push to main publishes the snapshots with it, and the release
     publishes with it. A file given with '-s' replaces the one actions/setup-java writes, so the
     server is named here again.
-  - 'camunda-community-hub-vanillabp-camunda7-adapter' is the GitHub Packages registry of the
+  - 'vanillabp-camunda7-adapter' is the GitHub Packages registry of the
     Camunda 7 adapter. The module migration-tests runs that adapter next to this extension, and
     its snapshots are only there. The module's pom.xml names the registry under this id. GitHub
     Packages asks for a token even for a public package, so the server carries the repository
@@ -27,7 +27,7 @@
             <password>${env.MAVEN_PASSWORD}</password>
         </server>
         <server>
-            <id>camunda-community-hub-vanillabp-camunda7-adapter</id>
+            <id>vanillabp-camunda7-adapter</id>
             <username>${env.USER_NAME}</username>
             <password>${env.USER_TOKEN}</password>
         </server>

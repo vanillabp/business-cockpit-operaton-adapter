@@ -48,12 +48,12 @@ The module `migration-tests` is different. It runs the Camunda 7 adapter next to
 the snapshots of the Camunda 7 adapter are only in the GitHub Packages registry of the Camunda
 Community Hub, `https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter`.
 GitHub Packages wants a login even for reading. So you need a personal access token (classic) with
-`read:packages`, and a server entry with the id `camunda-community-hub-vanillabp-camunda7-adapter` in
+`read:packages`, and a server entry with the id `vanillabp-camunda7-adapter` in
 your `~/.m2/settings.xml`:
 
 ```xml
 <server>
-  <id>camunda-community-hub-vanillabp-camunda7-adapter</id>
+  <id>vanillabp-camunda7-adapter</id>
   <username>your GitHub login</username>
   <password>the token</password>
 </server>

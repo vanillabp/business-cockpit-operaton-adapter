@@ -108,7 +108,7 @@ the reasons the Operaton adapter gives in its decision 7:
   the Camunda Community Hub, which wants a login even for reading. A module of its own keeps that
   need to one place. Every module before it builds without the login.
 
-The module names that registry under the id `camunda-community-hub-vanillabp-camunda7-adapter`. A
+The module names that registry under the id `vanillabp-camunda7-adapter`. A
 build needs a server entry with that id and a token with `read:packages`. Once the Camunda 7 adapter
 has a release on Maven Central, the registry goes away.
 

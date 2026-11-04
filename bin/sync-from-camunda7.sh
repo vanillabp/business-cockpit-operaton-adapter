@@ -36,7 +36,7 @@
 # Camunda 7 adapter. Its snapshots are only in the GitHub Packages registry of the Camunda
 # Community Hub, which wants a login even for reading. The script names that registry itself,
 # so your Maven settings need only the server entry with the id
-# 'camunda-community-hub-vanillabp-camunda7-adapter' and a token with 'read:packages'.
+# 'vanillabp-camunda7-adapter' and a token with 'read:packages'.
 # CONTRIBUTING.md, section "Snapshots", shows the entry.
 #
 # The two recipes take a few minutes together. On an error the script stops and leaves
@@ -99,7 +99,7 @@ cat > "$registry" <<'SETTINGS'
       <id>camunda7-adapter-registry</id>
       <repositories>
         <repository>
-          <id>camunda-community-hub-vanillabp-camunda7-adapter</id>
+          <id>vanillabp-camunda7-adapter</id>
           <url>https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter</url>
           <releases><enabled>false</enabled></releases>
           <snapshots><enabled>true</enabled></snapshots>
