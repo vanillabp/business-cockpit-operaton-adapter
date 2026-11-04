@@ -131,7 +131,7 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <id>camunda-community-hub-vanillabp-camunda7-adapter</id>
+      <id>vanillabp-camunda7-adapter</id>
       <url>https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter</url>
     </repository>
   </repositories>
