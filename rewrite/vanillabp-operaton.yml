@@ -165,9 +165,28 @@ name: io.vanillabp.cockpit.operaton.WhereOperatonAnswersDifferently
 displayName: Engine calls which Operaton answers differently from Camunda 7
 description: >-
   An engine method which kept its name and its signature in Operaton, but which answers in
-  another way. The code compiles either way, so only a test finds such a place. Each rule
-  names the test which found it.
+  another way, or an engine class which Operaton is going to remove. The code compiles either
+  way, so only a test or a compiler warning finds such a place. Each rule names what found it.
 recipeList:
+  # Operaton 2.2 deprecates AbstractBpmnParseListener for removal, because its BpmnParseListener
+  # has a default for every method. The one of Camunda 7 has none, so the Camunda 7 extension
+  # has to extend the abstract class, and this extension implements the interface instead.
+  # The Operaton adapter does the same. Found by the deprecation warning of the compiler.
+  - org.openrewrite.text.FindAndReplace:
+      find: 'extends AbstractBpmnParseListener implements '
+      replace: 'implements BpmnParseListener, '
+      caseSensitive: true
+      filePattern: '**/*.java'
+  - org.openrewrite.text.FindAndReplace:
+      find: extends AbstractBpmnParseListener
+      replace: implements BpmnParseListener
+      caseSensitive: true
+      filePattern: '**/*.java'
+  - org.openrewrite.text.FindAndReplace:
+      find: org.operaton.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener
+      replace: org.operaton.bpm.engine.impl.bpmn.parser.BpmnParseListener
+      caseSensitive: true
+      filePattern: '**/*.java'
   # Camunda 7 answers null where no engine command runs, Operaton throws. The code asks
   # exactly to tell the two cases apart, and 'find' answers empty where Camunda 7 answered
   # null. Found by OperatonCockpitEventsTest#aCalledProcessIsNotReported.

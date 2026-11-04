@@ -2,7 +2,7 @@ package io.vanillabp.cockpit.operaton;
 
 import org.operaton.bpm.engine.delegate.TaskListener;
 import org.operaton.bpm.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
-import org.operaton.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
+import org.operaton.bpm.engine.impl.bpmn.parser.BpmnParseListener;
 import org.operaton.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.operaton.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.operaton.bpm.engine.impl.pvm.process.ScopeImpl;
@@ -35,7 +35,7 @@ import io.vanillabp.operaton.api.OperatonTaskDefinitions;
  * that every user task gets them whether or not the application enriches it is decision 2 in the
  * Camunda 7 extension's DECISIONS.md.
  */
-public class OperatonUserTaskParseListener extends AbstractBpmnParseListener {
+public class OperatonUserTaskParseListener implements BpmnParseListener {
 
   /**
    * The events the cockpit is attached to. The order is the order the engine fires them in,
