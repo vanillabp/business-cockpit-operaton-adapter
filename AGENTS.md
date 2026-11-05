@@ -1,4 +1,4 @@
-# Working on businesscockpit-operaton-adapter
+# Working on business-cockpit-operaton-adapter
 
 The VanillaBP Business Cockpit integration for Operaton, built as an extension of VanillaBP
 Version 2, on Spring Boot and on Quarkus.
@@ -9,7 +9,7 @@ and why, and how to build.
 ## Most of the code is made by a script
 
 Nearly every file here is made from
-[businesscockpit-camunda7-adapter](https://github.com/vanillabp/businesscockpit-camunda7-adapter)
+[business-cockpit-camunda7-adapter](https://github.com/vanillabp/business-cockpit-camunda7-adapter)
 by `bin/sync-from-camunda7.sh`. The result sits on the branch `generated`, and `main` merges it.
 Decision 3 of [`DECISIONS.md`](./DECISIONS.md) says why, and
 [`CONTRIBUTING.md`](./CONTRIBUTING.md#following-the-camunda-7-extension) says how.
@@ -108,7 +108,7 @@ abbreviation out once. If a sentence trips you up when you read it aloud, rewrit
 This holds for every English text here: the README files, `DECISIONS.md`, this file, the
 Javadoc and comments which explain something, in the main code and in the tests, and the
 texts of commits and pull requests.
-It holds for the [wiki](https://github.com/vanillabp/businesscockpit-operaton-adapter/wiki)
+It holds for the [wiki](https://github.com/vanillabp/business-cockpit-operaton-adapter/wiki)
 as well, because the wiki clone has no `AGENTS.md` of its own.
 
 Nothing a program reads is renamed for the sake of language. Class and method names,

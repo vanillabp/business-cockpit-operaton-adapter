@@ -4,8 +4,8 @@
 
 [![Apache License V.2](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-Spring Boot [![Coverage](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fvanillabp.github.io%2Fbusinesscockpit-operaton-adapter%2Fspring-boot-report%2Findex.html&search=Total.*%3F.([0-9]%2B)[^0-9]*%3F%25&replace=%241%25&flags=m&label=Coverage&color=green&cacheSeconds=60)](https://vanillabp.github.io/businesscockpit-operaton-adapter/spring-boot-report)<br>
-Quarkus [![Coverage](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fvanillabp.github.io%2Fbusinesscockpit-operaton-adapter%2Fquarkus-report%2Findex.html&search=Total.*%3F.([0-9]%2B)[^0-9]*%3F%25&replace=%241%25&flags=m&label=Coverage&color=green&cacheSeconds=60)](https://vanillabp.github.io/businesscockpit-operaton-adapter/quarkus-report)
+Spring Boot [![Coverage](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fvanillabp.github.io%2Fbusiness-cockpit-operaton-adapter%2Fspring-boot-report%2Findex.html&search=Total.*%3F.([0-9]%2B)[^0-9]*%3F%25&replace=%241%25&flags=m&label=Coverage&color=green&cacheSeconds=60)](https://vanillabp.github.io/business-cockpit-operaton-adapter/spring-boot-report)<br>
+Quarkus [![Coverage](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fvanillabp.github.io%2Fbusiness-cockpit-operaton-adapter%2Fquarkus-report%2Findex.html&search=Total.*%3F.([0-9]%2B)[^0-9]*%3F%25&replace=%241%25&flags=m&label=Coverage&color=green&cacheSeconds=60)](https://vanillabp.github.io/business-cockpit-operaton-adapter/quarkus-report)
 
 This repository holds the [VanillaBP Business Cockpit](https://github.com/vanillabp/business-cockpit)
 integration for [Operaton](https://operaton.org/), built as an extension of
@@ -16,7 +16,7 @@ embedded Operaton engine, asks the application for the business details of what 
 the result to the cockpit server.
 
 Operaton is a fork of Camunda 7. This repository is made from the
-[Business Cockpit adapter for Camunda 7](https://github.com/vanillabp/businesscockpit-camunda7-adapter),
+[Business Cockpit adapter for Camunda 7](https://github.com/vanillabp/business-cockpit-camunda7-adapter),
 and it follows that repository by a merge, see [How the code is made](#how-the-code-is-made).
 
 ## Status
@@ -76,7 +76,7 @@ What the core does, class by class:
 The reasons for these classes are the decisions of the Camunda 7 extension. This repository's
 [`DECISIONS.md`](./DECISIONS.md) says so in its first entry and adds what is different here. What a
 user of this extension has to know is in the
-[wiki](https://github.com/vanillabp/businesscockpit-operaton-adapter/wiki).
+[wiki](https://github.com/vanillabp/business-cockpit-operaton-adapter/wiki).
 
 ## What is deliberately absent
 

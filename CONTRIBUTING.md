@@ -3,11 +3,11 @@
 This repository is the Business Cockpit adapter for Operaton. It is an extension of VanillaBP
 Version 2 and runs in the workflow application, on Spring Boot and on Quarkus. It tells the cockpit
 server about the user tasks and workflows it sees. How to use it is in the
-[wiki](https://github.com/vanillabp/businesscockpit-operaton-adapter/wiki). This file is for
+[wiki](https://github.com/vanillabp/business-cockpit-operaton-adapter/wiki). This file is for
 somebody who changes the code.
 
 Nearly all of the code is made from the
-[Business Cockpit adapter for Camunda 7](https://github.com/vanillabp/businesscockpit-camunda7-adapter)
+[Business Cockpit adapter for Camunda 7](https://github.com/vanillabp/business-cockpit-camunda7-adapter)
 by a script. Read [Following the Camunda 7 extension](#following-the-camunda-7-extension) before you
 change a line which came from there.
 
@@ -79,7 +79,7 @@ To bring a newer state of the Camunda 7 extension over:
    server entry of [Snapshots](#snapshots), and it takes a few minutes:
 
    ```bash
-   bin/sync-from-camunda7.sh <commit of businesscockpit-camunda7-adapter>
+   bin/sync-from-camunda7.sh <commit of business-cockpit-camunda7-adapter>
    ```
 
    It commits to the local branch `generated` and does not push. If nothing changed, it says so.
