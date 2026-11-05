@@ -13,7 +13,7 @@ the entries below, in the usual form `see decision 2 in the repository's DECISIO
 
 This extension does what the Camunda 7 extension does, with Operaton as the engine. Its code is made
 from the Camunda 7 code, and the reasons for that code are written down in the
-[decision log of the Camunda 7 extension](https://github.com/vanillabp/businesscockpit-camunda7-adapter/blob/main/DECISIONS.md).
+[decision log of the Camunda 7 extension](https://github.com/vanillabp/business-cockpit-camunda7-adapter/blob/main/DECISIONS.md).
 They hold here as well. Copying them would give two texts which drift apart, so they stay there.
 
 An entry below is about one of two things. Either Operaton differs from Camunda 7, or this repository

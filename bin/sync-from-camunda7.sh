@@ -84,7 +84,7 @@ c7_ref=$1
 
 # CDPATH is cleared because cd prints the directory it found through CDPATH.
 repository=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
-c7_repository=${C7_REPOSITORY:-https://github.com/vanillabp/businesscockpit-camunda7-adapter.git}
+c7_repository=${C7_REPOSITORY:-https://github.com/vanillabp/business-cockpit-camunda7-adapter.git}
 
 work=$(mktemp -d)
 echo "Working in $work"
