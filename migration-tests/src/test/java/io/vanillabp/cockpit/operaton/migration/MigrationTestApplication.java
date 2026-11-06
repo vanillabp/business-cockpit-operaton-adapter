@@ -26,7 +26,7 @@ public class MigrationTestApplication {
   /**
    * Lets the Camunda 7 engine evaluate decisions without the Scala FEEL engine. Operaton 2.2
    * brings another version of that library, and the pom.xml of this module removes Camunda's
-   * copy. Without this the Camunda 7 engine does not start. See decision 5 in the repository's
+   * copy. Without this the Camunda 7 engine does not start. See decision 7 in the repository's
    * DECISIONS.md.
    *
    * @return The customizer of every Camunda 7 engine of the application

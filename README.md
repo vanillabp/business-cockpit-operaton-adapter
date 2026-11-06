@@ -91,7 +91,7 @@ it asks the Operaton adapter. So the Spring Boot jar ships no configuration meta
 An application moves from Camunda 7 to Operaton with both adapters in one application: new
 workflows start on Operaton, and the old ones finish on Camunda 7. The cockpit then needs both
 extensions, this one and the Camunda 7 one. They have different names everywhere, so they do not
-get in each other's way (decision 4).
+get in each other's way (decision 6).
 
 One thing has to be done by hand. Camunda 7.24 and Operaton 2.2 bring two versions of the FEEL
 engine library, and with both on the classpath the Camunda 7 engine does not start. Remove
@@ -186,7 +186,7 @@ here is lost at the next sync, or it meets a conflict.
 Coverage is measured separately per platform, because the tests of one platform never run the
 other platform's code. The core is in both reports. If one platform never reaches a class of the
 core, that platform never runs the feature of that class. `migration-tests` measures nothing, see
-decision 5.
+decision 7.
 
 The last module of the reactor is `test-coverage-report/coverage-gate`. It reads both reports and
 breaks the build when a platform is below its threshold in the root POM:

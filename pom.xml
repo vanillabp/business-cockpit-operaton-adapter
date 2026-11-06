@@ -24,8 +24,8 @@
     <module>spring-boot</module>
     <module>quarkus/runtime</module>
     <module>quarkus/deployment</module>
-    <!-- this extension next to the Camunda 7 extension. It needs a login for the registry of
-         the Camunda 7 adapter, see decision 5 in the repository's DECISIONS.md -->
+    <!-- this extension next to the Camunda 7 extension, see decision 7 in the repository's
+         DECISIONS.md -->
     <module>migration-tests</module>
     <!-- last: it judges the reports the modules above produced -->
     <module>test-coverage-report</module>
