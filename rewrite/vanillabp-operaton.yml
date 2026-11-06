@@ -203,18 +203,6 @@ description: >-
   What no Java recipe of this file sees. Strings, comments, POMs, YAML, properties, service
   files and the imports of the Operaton adapter's classes.
 recipeList:
-  # The repository of the Camunda 7 adapter first, before 'camunda7' below turns it into a
-  # name nobody uses.
-  - org.openrewrite.text.FindAndReplace:
-      find: camunda-community-hub/vanillabp-camunda7-adapter
-      replace: vanillabp/operaton-adapter
-      caseSensitive: true
-  # The groupId of the Camunda 7 adapter. The Camunda Community Hub owns
-  # 'org.camunda.community', and the Operaton adapter is published as 'io.vanillabp'.
-  - org.openrewrite.text.FindAndReplace:
-      find: org.camunda.community.vanillabp
-      replace: io.vanillabp
-      caseSensitive: true
   # Class names. The Operaton adapter names its classes the way this rule does, so
   # 'io.vanillabp.camunda7.api.Camunda7EngineFacts' becomes
   # 'io.vanillabp.operaton.api.OperatonEngineFacts' together with the rule below. These
@@ -247,14 +235,14 @@ recipeList:
       regex: true
   # 'Camunda' alone means the engine the extension listens to: 'the version Camunda counted',
   # 'a Camunda tenant', 'Camunda's levels'. A name with a number stays, such as 'Camunda 8'
-  # and what the rules above kept of 'Camunda 7'. So does the Camunda Community Hub.
+  # and what the rules above kept of 'Camunda 7'.
   - org.openrewrite.text.FindAndReplace:
-      find: '\b([aA]) Camunda\b(?!\s*\d| Community)'
+      find: '\b([aA]) Camunda\b(?!\s*\d)'
       replace: $1n Operaton
       caseSensitive: true
       regex: true
   - org.openrewrite.text.FindAndReplace:
-      find: '\bCamunda\b(?!\s*\d| Community)'
+      find: '\bCamunda\b(?!\s*\d)'
       replace: Operaton
       caseSensitive: true
       regex: true

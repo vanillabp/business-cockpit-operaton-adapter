@@ -17,7 +17,7 @@
   <packaging>pom</packaging>
   <name>VanillaBP Business Cockpit adapter for Operaton</name>
   <description>Business Cockpit integration for Operaton, built as a VanillaBP 2 extension.</description>
-  <url>https://github.com/vanillabp/businesscockpit-operaton-adapter</url>
+  <url>https://github.com/vanillabp/business-cockpit-operaton-adapter</url>
 
   <modules>
     <module>core</module>
@@ -29,9 +29,9 @@
   </modules>
 
   <scm>
-    <connection>scm:git:https://github.com/vanillabp/businesscockpit-operaton-adapter.git</connection>
-    <developerConnection>scm:git:https://github.com/vanillabp/businesscockpit-operaton-adapter.git</developerConnection>
-    <url>https://github.com/vanillabp/businesscockpit-operaton-adapter/tree/main</url>
+    <connection>scm:git:https://github.com/vanillabp/business-cockpit-operaton-adapter.git</connection>
+    <developerConnection>scm:git:https://github.com/vanillabp/business-cockpit-operaton-adapter.git</developerConnection>
+    <url>https://github.com/vanillabp/business-cockpit-operaton-adapter/tree/main</url>
   </scm>
 
   <properties>
