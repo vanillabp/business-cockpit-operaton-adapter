@@ -25,7 +25,7 @@ import io.vanillabp.operaton.springboot.engine.OperatonEngineHolder;
 /**
  * The Business Cockpit while an application moves from Camunda 7 to Operaton: the Camunda 7
  * adapter and the Operaton adapter in one application, each with its engine, and both Business
- * Cockpit extensions next to them. See decision 4 in the repository's DECISIONS.md.
+ * Cockpit extensions next to them. See decision 6 in the repository's DECISIONS.md.
  * <p>
  * The application runs twice on the same databases. First with Camunda 7 in front, the way it
  * ran before the migration, and it starts a workflow there. Then with Operaton in front, and

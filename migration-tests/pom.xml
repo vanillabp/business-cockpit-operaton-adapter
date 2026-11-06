@@ -37,7 +37,7 @@
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <!-- no coverage either: the module 'spring-boot' already runs the code of this extension,
          and the Camunda 7 extension is not ours to measure. The empty agent keeps Surefire's
-         inherited '@{jacoco.agent}' resolvable. See decision 5 in the repository's
+         inherited '@{jacoco.agent}' resolvable. See decision 7 in the repository's
          DECISIONS.md. -->
     <jacoco.skip>true</jacoco.skip>
     <jacoco.agent/>
@@ -64,7 +64,7 @@
          'org.camunda.feel', and with both on the classpath the Camunda 7 engine does not start.
          So Camunda's copy goes, from both artifacts which bring it, and the Camunda 7 engine
          evaluates its decisions with the older FEEL implementation, which needs no Scala.
-         MigrationTestApplication switches that on. See decision 5 in the repository's
+         MigrationTestApplication switches that on. See decision 7 in the repository's
          DECISIONS.md. -->
     <dependency>
       <groupId>io.vanillabp.businesscockpit</groupId>
