@@ -32,12 +32,8 @@
 #   MAVEN_ARGS      Maven reads this itself, in every call. For instance
 #                   '-Dmaven.repo.local=/tmp/m2' keeps the run out of your local repository.
 #
-# The recipes need the dependencies of the Camunda 7 extension, and one of them is the
-# Camunda 7 adapter. Its snapshots are only in the GitHub Packages registry of the Camunda
-# Community Hub, which wants a login even for reading. The script names that registry itself,
-# so your Maven settings need only the server entry with the id
-# 'vanillabp-camunda7-adapter' and a token with 'read:packages'.
-# CONTRIBUTING.md, section "Snapshots", shows the entry.
+# The recipe reads the dependencies of the Camunda 7 extension, and one of them is the Camunda 7
+# adapter. All of them come from Maven Central and its snapshot repository, which need no login.
 #
 # The two recipes take a few minutes together. On an error the script stops and leaves
 # its working directory behind, so the error can be read there. It prints where that is.
@@ -89,30 +85,6 @@ c7_repository=${C7_REPOSITORY:-https://github.com/vanillabp/business-cockpit-cam
 work=$(mktemp -d)
 echo "Working in $work"
 
-# The registry of the Camunda 7 adapter, as global settings. Maven merges them with your own
-# settings, which hold the login for the same id.
-registry="$work/camunda7-adapter-registry.xml"
-cat > "$registry" <<'SETTINGS'
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
-  <profiles>
-    <profile>
-      <id>camunda7-adapter-registry</id>
-      <repositories>
-        <repository>
-          <id>vanillabp-camunda7-adapter</id>
-          <url>https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter</url>
-          <releases><enabled>false</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
-  <activeProfiles>
-    <activeProfile>camunda7-adapter-registry</activeProfile>
-  </activeProfiles>
-</settings>
-SETTINGS
-
 # 1. The Camunda 7 extension at the given commit.
 git clone --quiet "$c7_repository" "$work/c7"
 git -C "$work/c7" checkout --quiet "$c7_ref"
@@ -143,7 +115,7 @@ cp "$repository/rewrite/vanillabp-operaton.yml" "$recipe"
 cd "$tree"
 
 # 3. Operaton's recipe.
-mvn --global-settings "$registry" --batch-mode --no-transfer-progress "${NO_BUILD[@]}" \
+mvn --batch-mode --no-transfer-progress "${NO_BUILD[@]}" \
   "$REWRITE_PLUGIN:run" \
   -Drewrite.recipeArtifactCoordinates="$OPERATON_RECIPE" \
   -Drewrite.activeRecipes=org.operaton.rewrite.MigrateFromCamunda \
@@ -151,7 +123,7 @@ mvn --global-settings "$registry" --batch-mode --no-transfer-progress "${NO_BUIL
 
 # 4. VanillaBP's recipe.
 "$repository/bin/write-type-renames.sh" "$tree" "$recipe"
-mvn --global-settings "$registry" --batch-mode --no-transfer-progress "${NO_BUILD[@]}" \
+mvn --batch-mode --no-transfer-progress "${NO_BUILD[@]}" \
   "$REWRITE_PLUGIN:run" \
   -Drewrite.configLocation="$recipe" \
   -Drewrite.activeRecipes=io.vanillabp.cockpit.operaton.FromCamunda7 \
@@ -160,7 +132,7 @@ mvn --global-settings "$registry" --batch-mode --no-transfer-progress "${NO_BUIL
 # The formatting rules of the repository, applied once here, so that 'main' never has to
 # carry a formatting change of generated code. The recipes write correct code, but not always
 # in the layout Spotless checks.
-mvn --global-settings "$registry" --batch-mode --no-transfer-progress com.diffplug.spotless:spotless-maven-plugin:apply
+mvn --batch-mode --no-transfer-progress com.diffplug.spotless:spotless-maven-plugin:apply
 
 # The recipe and the script which wrote its type renames go into the commit as they were
 # used, so 'generated' shows how it was made.

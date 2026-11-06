@@ -79,7 +79,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.camunda.community.vanillabp</groupId>
+      <groupId>io.vanillabp</groupId>
       <artifactId>camunda7-adapter-spring-boot</artifactId>
       <version>${camunda7-adapter.version}</version>
       <scope>test</scope>
@@ -118,23 +118,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <!-- The snapshots of the Camunda 7 adapter are only in the GitHub Packages registry of the
-       Camunda Community Hub. Reading it needs a login even for a public package, so a build
-       needs a server entry with this id (see CONTRIBUTING.md). The entry goes away once the
-       Camunda 7 adapter has a release on Maven Central. -->
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>vanillabp-camunda7-adapter</id>
-      <url>https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter</url>
-    </repository>
-  </repositories>
 
   <build>
     <pluginManagement>
