@@ -37,7 +37,7 @@ env:
   # release-versions.sh of maven-release-parent at a fixed commit, so a later change of the
   # script cannot break the release of an older branch. A new version of the script comes
   # with a pull request which moves this commit.
-  RELEASE_VERSIONS_SH: "https://raw.githubusercontent.com/vanillabp/maven-release-parent/a0a3e691fc99cc80e7a6b87a35b7f7b94a9f6b47/.github/scripts/release-versions.sh"
+  RELEASE_VERSIONS_SH: "https://raw.githubusercontent.com/vanillabp/maven-release-parent/e6c840c50e2ed95412710828df00fa194924edf6/.github/scripts/release-versions.sh"
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -111,13 +111,11 @@ jobs:
         env:
           TRAIN: "${{ inputs.train }}"
         run: bash "$RUNNER_TEMP/release-versions.sh" raise "$TRAIN"
-      # a release must not depend on anything that can still change under it
-      - name: No SNAPSHOT dependency is left
-        run: |
-          if grep -R "SNAPSHOT" --include=pom.xml . ; then
-            echo "::error::A SNAPSHOT is left in a POM after the VanillaBP versions were raised, so this release would depend on something unreleased. Release it first and name its version on main:"
-            exit 1
-          fi
+      # 'raise' changes io.vanillabp* only. Any other SNAPSHOT stops the release here, also one
+      # of a library from outside VanillaBP. It has to be on Maven Central first, and main has
+      # to name its released version.
+      - name: No SNAPSHOT is left
+        run: bash "$RUNNER_TEMP/release-versions.sh" no-snapshots
       - name: Build and deploy to Maven Central
         run: mvn --batch-mode --no-transfer-progress
           $TRAIN_ARGS clean deploy -Prelease,central-portal
