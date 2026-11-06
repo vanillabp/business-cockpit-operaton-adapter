@@ -44,26 +44,8 @@ behaviour, and ask before a change makes one of their entries untrue.
 The build reads the platform, the cockpit and the Operaton adapter from the snapshot repository of
 Maven Central, which needs no login.
 
-The module `migration-tests` is different. It runs the Camunda 7 adapter next to this extension, and
-the snapshots of the Camunda 7 adapter are only in the GitHub Packages registry of the Camunda
-Community Hub, `https://maven.pkg.github.com/camunda-community-hub/vanillabp-camunda7-adapter`.
-GitHub Packages wants a login even for reading. So you need a personal access token (classic) with
-`read:packages`, and a server entry with the id `vanillabp-camunda7-adapter` in
-your `~/.m2/settings.xml`:
-
-```xml
-<server>
-  <id>vanillabp-camunda7-adapter</id>
-  <username>your GitHub login</username>
-  <password>the token</password>
-</server>
-```
-
-Without it, leave the module out: `mvn install -pl '!migration-tests'`. The sync script needs the
-same entry, because the Camunda 7 extension it starts from depends on the Camunda 7 adapter. The
-workflows get the token from the secrets `VANILLABP_USER_NAME` and `VANILLABP_USER_TOKEN`. A pull
-request from a fork gets no secrets, so its build of that module fails. A maintainer then pushes the
-branch to this repository.
+The module `migration-tests` runs the Camunda 7 adapter next to this extension. Its snapshots are in
+the same repository, so that module and the sync script need no login either.
 
 ## Following the Camunda 7 extension
 
@@ -75,8 +57,8 @@ To bring a newer state of the Camunda 7 extension over:
 
 1. Read the log of the Camunda 7 extension since the commit named by the newest commit on
    `generated`. Read its `DECISIONS.md` as well. A new entry there may need one here (decision 1).
-2. Run the script with the commit you want, from a checkout of this repository. It needs the
-   server entry of [Snapshots](#snapshots), and it takes a few minutes:
+2. Run the script with the commit you want, from a checkout of this repository. It takes a
+   few minutes:
 
    ```bash
    bin/sync-from-camunda7.sh <commit of business-cockpit-camunda7-adapter>

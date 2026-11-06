@@ -7,7 +7,7 @@
   "packageRules": [
     {
       "description": "VanillaBP, the Business Cockpit and the BPMS adapters follow the framework, not Renovate: their versions are bumped when a release is cut, and while they are snapshots there is nothing to look up.",
-      "matchPackageNames": ["/^io\\.vanillabp/", "/^org\\.camunda\\.community\\.vanillabp/"],
+      "matchPackageNames": ["/^io\\.vanillabp/"],
       "enabled": false
     },
     {

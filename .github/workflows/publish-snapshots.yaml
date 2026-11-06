@@ -21,7 +21,7 @@ concurrency:
   # publish: both upload through the profile 'central-portal', but a release writes fixed
   # versions and this workflow writes the snapshot, so they never write the same
   # coordinates.
-  group: businesscockpit-operaton-adapter-publish
+  group: business-cockpit-operaton-adapter-publish
   cancel-in-progress: false
 permissions:
   contents: read
@@ -60,11 +60,8 @@ jobs:
           server-username-env-var: MAVEN_USERNAME
           server-password-env-var: MAVEN_PASSWORD
       - name: Publish package
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/github-packages-settings.xml
-          --batch-mode --no-transfer-progress --update-snapshots deploy -P central-portal
+        run: mvn --batch-mode --no-transfer-progress --update-snapshots deploy -P central-portal
         env:
-          USER_NAME: "${{ secrets.VANILLABP_USER_NAME }}"
-          USER_TOKEN: "${{ secrets.VANILLABP_USER_TOKEN }}"
           MAVEN_USERNAME: "${{ secrets.MAVEN_CENTRAL_PORTAL_TOKEN_USER }}"
           MAVEN_PASSWORD: "${{ secrets.MAVEN_CENTRAL_PORTAL_TOKEN_PW }}"
       # The reports are already there: the step above runs the whole lifecycle up to

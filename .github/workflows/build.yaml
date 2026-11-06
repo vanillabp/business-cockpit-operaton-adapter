@@ -19,7 +19,7 @@ concurrency:
   # publish workflow was never needed for this build: it runs 'install' with read
   # access to the registry and uploads nothing, so it can neither overwrite a snapshot
   # nor be overwritten by one.
-  group: businesscockpit-operaton-adapter-pr-build-${{ github.ref }}
+  group: business-cockpit-operaton-adapter-pr-build-${{ github.ref }}
   cancel-in-progress: false
 permissions:
   contents: read
@@ -28,7 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
     steps:
       - uses: actions/checkout@v7
       # the Maven the publish of main runs with, see publish-snapshots.yaml for why it is not
@@ -48,11 +47,7 @@ jobs:
       # second run, the compiler does not, and every javac warning is reported twice. It
       # stays 'install' because the Quarkus tests load modules from the local repository.
       - name: Build and test
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/github-packages-settings.xml
-          --batch-mode --no-transfer-progress --update-snapshots install
-        env:
-          USER_NAME: "${{ secrets.VANILLABP_USER_NAME }}"
-          USER_TOKEN: "${{ secrets.VANILLABP_USER_TOKEN }}"
+        run: mvn --batch-mode --no-transfer-progress --update-snapshots install
       # what a failing test printed is in these reports, and for a test booting its
       # application in a forked JVM it is ONLY in that application's own log file
       - name: Upload the test reports of a failed build

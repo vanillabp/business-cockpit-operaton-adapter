@@ -99,7 +99,7 @@ Camunda's copy from both Camunda 7 artifacts:
 
 ```xml
 <dependency>
-  <groupId>org.camunda.community.vanillabp</groupId>
+  <groupId>io.vanillabp</groupId>
   <artifactId>camunda7-adapter-spring-boot</artifactId>
   <exclusions>
     <exclusion>
@@ -154,14 +154,10 @@ The tests boot real applications on both platforms: a Spring Boot context and a 
 each with an embedded Operaton engine on H2, a cockpit server the test runs itself and the outbox in
 between. No BPMS double and no mock of the engine.
 
-The build reads the snapshots of the platform, of the cockpit and of the Operaton adapter from the
-snapshot repository of Maven Central, `https://central.sonatype.com/repository/maven-snapshots/`. The
-parent `io.vanillabp:release-parent` names that repository, and reading it needs no login.
-
-`migration-tests` is the exception. It needs the Camunda 7 adapter, whose snapshots are only in the
-GitHub Packages registry of the Camunda Community Hub. GitHub Packages asks for a token even for a
-public package. [`CONTRIBUTING.md`](./CONTRIBUTING.md#snapshots) says how to give your build one,
-and how to build without that module.
+The build reads the snapshots of the platform, of the cockpit, of the Operaton adapter and of the
+Camunda 7 adapter from the snapshot repository of Maven Central,
+`https://central.sonatype.com/repository/maven-snapshots/`. The parent `io.vanillabp:release-parent`
+names that repository, and reading it needs no login.
 
 Snapshots of this repository go to the snapshot repository of Maven Central through the pipeline
 described below, and releases go to Maven Central under the groupId `io.vanillabp.businesscockpit`,
@@ -214,9 +210,6 @@ there.
 `main` which a new snapshot of the platform, of the cockpit or of the Operaton adapter breaks is
 seen, even when nobody pushed here. A new Operaton minor reaches this repository that way. A red
 night becomes one issue with the label `nightly-build`.
-
-Every workflow reads the Camunda 7 adapter for `migration-tests` with the repository secrets
-`VANILLABP_USER_NAME` and `VANILLABP_USER_TOKEN`, a token with `read:packages`.
 
 ## Noteworthy & Contributors
 
