@@ -7,6 +7,15 @@ name: Build
   # The nightly build calls this workflow as it is, so the night proves what a pull request
   # proves. See nightly-build.yaml.
   workflow_call:
+# Where Maven reads the snapshots of the other VanillaBP repositories from, see
+# .github/maven/settings.xml: from GitHub Packages once the organization sets the Actions
+# variable VANILLABP_SNAPSHOTS_FROM to 'github-packages', else from the snapshot repository of
+# Maven Central. Reading GitHub Packages needs a token even for public packages. The
+# GITHUB_TOKEN of the run is enough, because every job which runs Maven asks for
+# 'packages: read'.
+env:
+  VBP_SNAPSHOTS_FROM: "${{ vars.VANILLABP_SNAPSHOTS_FROM == 'github-packages' && 'github-packages' || 'central' }}"
+  VBP_PACKAGES_READ_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 concurrency:
   # A group per pull request. GitHub keeps at most one waiting run per group, and a
   # newer run takes the place of the one that waits. The replaced run ends as
@@ -28,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v7
       # the Maven the publish of main runs with, see publish-snapshots.yaml for why it is not
@@ -52,7 +62,7 @@ jobs:
       # second run, the compiler does not, and every javac warning is reported twice. It
       # stays 'install' because the Quarkus tests load modules from the local repository.
       - name: Build and test
-        run: mvn --batch-mode --no-transfer-progress --update-snapshots install
+        run: mvn -s .github/maven/settings.xml --batch-mode --no-transfer-progress --update-snapshots install
       # what a failing test printed is in these reports, and for a test booting its
       # application in a forked JVM it is ONLY in that application's own log file
       - name: Upload the test reports of a failed build

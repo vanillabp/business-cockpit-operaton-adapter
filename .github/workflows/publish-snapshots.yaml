@@ -3,13 +3,29 @@ name: Publish snapshots
 # shared snapshot coordinates, so what gets published has to be what main holds, not
 # whatever branch was pushed last.
 #
-# The snapshots go to the snapshot repository of Maven Central. Anybody can read them there
+# The snapshots go to two places in one build, with the profile 'publish-snapshots' of the
+# POM. GitHub Packages is what the builds of the other VanillaBP repositories read, so they
+# do not ask Maven Central for every snapshot and are not stopped by its rate limit. The
+# snapshot repository of Maven Central stays for everybody else: anybody can read it there
 # without a login. Writing needs the Central Portal token, and only this workflow and the
 # release get it.
+#
+# Only where the Actions variable VANILLABP_PUBLISH is 'true' does this workflow publish.
+# The vanillabp organization sets it for all its repositories. A fork does not have it, so
+# a fork never publishes.
 "on":
   push:
     branches:
       - "main"
+# Where Maven reads the snapshots of the other VanillaBP repositories from, see
+# .github/maven/settings.xml: from GitHub Packages once the organization sets the Actions
+# variable VANILLABP_SNAPSHOTS_FROM to 'github-packages', else from the snapshot repository of
+# Maven Central. Reading GitHub Packages needs a token even for public packages. The
+# GITHUB_TOKEN of the run is enough, because every job which runs Maven asks for
+# 'packages: read'.
+env:
+  VBP_SNAPSHOTS_FROM: "${{ vars.VANILLABP_SNAPSHOTS_FROM == 'github-packages' && 'github-packages' || 'central' }}"
+  VBP_PACKAGES_READ_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 concurrency:
   # One publish of this repository at a time, because snapshot artifacts share their
   # coordinates and two publishes at once overwrite each other. A run which is already
@@ -18,7 +34,7 @@ concurrency:
   # main that is what should happen: the newer run carries the newer artifacts. The
   # pull-request build has a group of its own, one per pull request, because it
   # publishes nothing. The release has a group of its own too, so it can run beside a
-  # publish: both upload through the profile 'central-portal', but a release writes fixed
+  # publish: both upload to Maven Central, but a release writes fixed
   # versions and this workflow writes the snapshot, so they never write the same
   # coordinates.
   group: business-cockpit-operaton-adapter-publish
@@ -34,9 +50,14 @@ permissions:
   id-token: write
 jobs:
   publish:
+    if: "${{ vars.VANILLABP_PUBLISH == 'true' }}"
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      # writes the snapshots to GitHub Packages of this repository and reads those of the
+      # other repositories. A pull request from a fork gets a token which can only read,
+      # whatever this line says
+      packages: write
     steps:
       - uses: actions/checkout@v7
       # Maven 3.10 writes 'maven-metadata-local.xml' and '_remote.repositories' into the
@@ -59,16 +80,12 @@ jobs:
           java-version: 25.0.5+8.0.LTS
           distribution: temurin
           cache: maven
-          # the server of the profile 'central-portal' in io.vanillabp:release-parent. The
-          # two names are environment variables, and only the step which publishes sets them
-          server-id: vanillabp-central
-          server-username-env-var: MAVEN_USERNAME
-          server-password-env-var: MAVEN_PASSWORD
       - name: Publish package
-        run: mvn --batch-mode --no-transfer-progress --update-snapshots deploy -P central-portal
+        run: mvn -s .github/maven/settings.xml --batch-mode --no-transfer-progress --update-snapshots deploy -P publish-snapshots
         env:
           MAVEN_USERNAME: "${{ secrets.MAVEN_CENTRAL_PORTAL_TOKEN_USER }}"
           MAVEN_PASSWORD: "${{ secrets.MAVEN_CENTRAL_PORTAL_TOKEN_PW }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       # The reports are already there: the step above runs the whole lifecycle up to
       # 'deploy', and JaCoCo writes both of them in 'verify'. So this step only copies them
       # under the names they get on the web. A name is the last part of the address the
