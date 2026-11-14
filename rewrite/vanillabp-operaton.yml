@@ -86,6 +86,9 @@ recipeList:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.Camunda7CockpitTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.OperatonCockpitTest
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.Camunda7KeyAtTheAdapterRefusedTest
+      newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.OperatonKeyAtTheAdapterRefusedTest
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.Camunda7OwnDataSourceTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.quarkus.it.OperatonOwnDataSourceTest
   - org.openrewrite.java.ChangeType:
@@ -115,6 +118,9 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7HistoryActivityTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonHistoryActivityTest
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7KeyAtTheAdapterRefusedTest
+      newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonKeyAtTheAdapterRefusedTest
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.Camunda7ModuleTenantTest
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.springboot.test.OperatonModuleTenantTest

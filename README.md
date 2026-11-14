@@ -84,7 +84,10 @@ The same as in the Camunda 7 extension. This extension rewrites no model: a list
 while the engine parses a model, so the BPMN in your repository and the BPMN the engine gets are the
 same. It has no persistence of its own. What has to survive a crash is the outbox entry VanillaBP
 already provides. And it has no configuration key of its own. What it has to know about an engine
-it asks the Operaton adapter. So the Spring Boot jar ships no configuration metadata.
+it asks the Operaton adapter. Because this extension announces no key to `extensions-commons`
+(`AdapterCockpitKeys`), the cockpit's neutral half refuses every key at
+`vanillabp.adapters.<adapter-id>.cockpit` and below. `OperatonKeyAtTheAdapterRefusedTest` holds that on both
+platforms. So the Spring Boot jar ships no configuration metadata.
 
 ## Running next to the Camunda 7 extension
 
