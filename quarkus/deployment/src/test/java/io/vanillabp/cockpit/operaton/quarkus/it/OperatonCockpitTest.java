@@ -284,6 +284,9 @@ public class OperatonCockpitTest {
     // the end of a case says nothing about its start. The engine writes the start time only into
     // the event of the start, and this end comes in a command of its own
     assertTrue(workflow.body().contains("\"createdAt\":null"), workflow.body());
+    // the reason of the deletion is the comment of both, because no details provider set one
+    assertTrue(task.body().contains("\"comment\":\"the test cancelled it\""), task.body());
+    assertTrue(workflow.body().contains("\"comment\":\"the test cancelled it\""), workflow.body());
 
   }
 

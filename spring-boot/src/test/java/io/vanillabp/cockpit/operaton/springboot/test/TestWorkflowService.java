@@ -38,6 +38,12 @@ import io.vanillabp.spi.service.WorkflowService;
     })
 public class TestWorkflowService {
 
+  /** The customer whose case and task get a comment from the details providers. */
+  public static final String CUSTOMER_WITH_A_COMMENT = "Mona";
+
+  /** The comment the details providers set for {@link #CUSTOMER_WITH_A_COMMENT}. */
+  public static final String COMMENT_OF_THE_MODULE = "withdrawn by phone";
+
   /** The BPMN process of the test. */
   public static final String BPMN_PROCESS_ID = "CockpitProcess";
 
@@ -195,6 +201,9 @@ public class TestWorkflowService {
                         .valueOf(prefilled.getAssignee()),
                     SERVED_BY, APPROVE_OF_THE_FIRST));
     prefilled.setCandidateGroups(List.of("approvers"));
+    if (CUSTOMER_WITH_A_COMMENT.equals(aggregate.getCustomer())) {
+      prefilled.setComment(COMMENT_OF_THE_MODULE);
+    }
     return prefilled;
 
   }
@@ -299,6 +308,9 @@ public class TestWorkflowService {
 
     prefilled
         .setDetails(Map.of("customer", aggregate.getCustomer(), SERVED_BY, WORKFLOW_OF_THE_FIRST));
+    if (CUSTOMER_WITH_A_COMMENT.equals(aggregate.getCustomer())) {
+      prefilled.setComment(COMMENT_OF_THE_MODULE);
+    }
     return prefilled;
 
   }

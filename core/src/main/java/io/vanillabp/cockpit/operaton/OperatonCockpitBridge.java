@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 import org.operaton.bpm.engine.ProcessEngine;
 import org.operaton.bpm.engine.delegate.DelegateTask;
+import org.operaton.bpm.engine.delegate.TaskListener;
 import org.operaton.bpm.engine.history.HistoricProcessInstance;
 import org.operaton.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.operaton.bpm.engine.impl.history.event.HistoricProcessInstanceEventEntity;
@@ -351,6 +352,7 @@ public class OperatonCockpitBridge implements BusinessCockpitBpmsBridge {
         .multiInstances(
             multiInstancesOf(
                 OperatonMultiInstances.of(task.getExecution(), engineFacts.taskRegistry())))
+        .comment(commentOfTheEvent(task))
         .build();
 
   }
@@ -380,7 +382,32 @@ public class OperatonCockpitBridge implements BusinessCockpitBpmsBridge {
     return new WorkflowDetailsPrefill(
         versionOf(event.getProcessDefinitionId()), event.getBusinessKey(), (name == null) || name.isBlank()
             ? bpmnProcessId
-            : name, event.getStartUserId(), atOffset(event.getStartTime()));
+            : name, event.getStartUserId(), atOffset(event.getStartTime()), null, null, commentOfTheEvent(event));
+
+  }
+
+  /**
+   * The reason somebody gave while deleting the process instance of a task. Only the deletion of
+   * a task carries one. See {@link OperatonDeletions} for when it counts.
+   */
+  private static String commentOfTheEvent(
+      final DelegateTask task) {
+
+    if (!TaskListener.EVENTNAME_DELETE.equals(task.getEventName())) {
+      return null;
+    }
+    return OperatonDeletions.commentOfADeletedTask(task.getDeleteReason());
+
+  }
+
+  /**
+   * The reason somebody gave while deleting a process instance. See {@link OperatonDeletions}
+   * for when it counts.
+   */
+  private static String commentOfTheEvent(
+      final HistoricProcessInstanceEventEntity event) {
+
+    return OperatonDeletions.commentOf(event);
 
   }
 
