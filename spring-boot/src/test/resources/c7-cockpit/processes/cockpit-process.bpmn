@@ -13,7 +13,18 @@
     <bpmn:endEvent id="End">
       <bpmn:incoming>ToEnd</bpmn:incoming>
     </bpmn:endEvent>
+    <!-- a modelled way out of the user task. The engine deletes the task with a delete reason of
+         its own, which is no reason a person gave -->
+    <bpmn:boundaryEvent id="Withdrawn" attachedToRef="Approve">
+      <bpmn:outgoing>ToWithdrawnEnd</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="WithdrawnMessage" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="ToWithdrawnEnd" sourceRef="Withdrawn" targetRef="WithdrawnEnd" />
+    <bpmn:endEvent id="WithdrawnEnd">
+      <bpmn:incoming>ToWithdrawnEnd</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
+  <bpmn:message id="WithdrawnMessage" name="Withdrawn" />
   <bpmn:process id="MultiInstanceProcess" isExecutable="true">
     <bpmn:startEvent id="MI_Start">
       <bpmn:outgoing>MI_ToSign</bpmn:outgoing>
