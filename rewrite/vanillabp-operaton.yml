@@ -41,6 +41,9 @@ recipeList:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.Camunda7CockpitWiring
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.OperatonCockpitWiring
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.Camunda7Deletions
+      newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.OperatonDeletions
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.Camunda7EventBeingReported
       newFullyQualifiedTypeName: io.vanillabp.cockpit.camunda7.OperatonEventBeingReported
   - org.openrewrite.java.ChangeType:

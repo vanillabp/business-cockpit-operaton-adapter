@@ -18,8 +18,8 @@ import io.vanillabp.cockpit.extension.spi.WorkflowEventKind;
   * The alternative would be an execution listener on every start and end event of every model.
   * That means rewriting models the modeller wrote, and it misses a workflow whose end nobody
   * modelled. History is the engine's own account of the same thing and needs no model change. It
-  * even reports a cancellation, the case an end event never reaches, as an end with a delete
-  * reason.
+  * even reports a cancellation, the case an end event never reaches, as an end whose state says
+  * that the instance was terminated.
  * <p>
  * VanillaBP installs this handler NEXT TO the engine's own, so history is still written the
  * way it was. Every other kind of history event passes through untouched.
@@ -114,9 +114,9 @@ public class OperatonWorkflowHistoryHandler implements HistoryEventHandler {
   }
 
   /**
-   * A process instance which ended carries a delete reason exactly where something ended it
-   * from the outside instead of a token reaching an end event, which is what the cockpit
-   * distinguishes as cancelled from completed.
+   * A process instance which ended without a token reaching an end event was torn down by the
+   * engine, most often because somebody deleted it. The cockpit shows that as cancelled, also
+   * where nobody gave a reason. See {@link OperatonDeletions}.
    */
   private static WorkflowEventKind kindOf(
       final HistoricProcessInstanceEventEntity processInstance) {
@@ -125,7 +125,7 @@ public class OperatonWorkflowHistoryHandler implements HistoryEventHandler {
       return WorkflowEventKind.CREATED;
     }
     if (processInstance.isEventOfType(HistoryEventTypes.PROCESS_INSTANCE_END)) {
-      return processInstance.getDeleteReason() != null
+      return OperatonDeletions.endedWithoutReachingAnEndEvent(processInstance)
           ? WorkflowEventKind.CANCELLED
           : WorkflowEventKind.COMPLETED;
     }
