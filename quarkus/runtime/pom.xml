@@ -46,19 +46,6 @@
       <artifactId>operaton-adapter-quarkus</artifactId>
     </dependency>
     <dependency>
-      <!-- VanillaBP's resolved configuration, which is where this module reads the configured
-        adapter ids from; it arrives transitively as well, and is declared because the producer
-        compiles against it -->
-      <groupId>io.vanillabp.adapter</groupId>
-      <artifactId>migration-adapter</artifactId>
-    </dependency>
-    <dependency>
-      <!-- the adapter SPI, for the name-clash avoidance this module hands the customizer: it
-        arrives transitively as well, and is declared because the producer compiles against it -->
-      <groupId>io.vanillabp</groupId>
-      <artifactId>vanillabp-adapter-spi</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
     </dependency>

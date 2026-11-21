@@ -11,10 +11,10 @@ import io.vanillabp.cockpit.extension.spi.BusinessCockpitEventPublisher;
 import io.vanillabp.cockpit.operaton.OperatonCockpitCustomizer;
 import io.vanillabp.cockpit.operaton.OperatonCockpitWiring;
 import io.vanillabp.cockpit.operaton.OperatonWorkflowProcesses;
-import io.vanillabp.integration.adapter.migration.config.MigrationAdapterProperties;
-import io.vanillabp.integration.adapter.spi.NameClashAvoidanceSupport;
-import io.vanillabp.integration.adapter.spi.workflowtask.WorkflowTaskWiring;
 import io.vanillabp.integration.extension.spi.ExtensionWiringService;
+import io.vanillabp.integration.extension.spi.settings.VanillaBpSettings;
+import io.vanillabp.integration.spi.IdentifierScoping;
+import io.vanillabp.integration.spi.workflowtask.WorkflowTaskClaims;
 import io.vanillabp.operaton.OperatonProcessingContext;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 import io.vanillabp.operaton.engine.OperatonEngineCustomizer;
@@ -30,7 +30,7 @@ import io.vanillabp.operaton.engine.OperatonEngineCustomizer;
  * extension does not compile against a platform integration.
  */
 @AutoConfiguration(afterName = "io.vanillabp.integration.processservice.SpringBootMigrationAdapterAutoConfiguration")
-@ConditionalOnBean(MigrationAdapterProperties.class)
+@ConditionalOnBean(VanillaBpSettings.class)
 @Import(OperatonCockpitBeanRegistrar.class)
 public class OperatonCockpitAutoConfiguration {
 
@@ -60,7 +60,7 @@ public class OperatonCockpitAutoConfiguration {
    * Provides this extension's wiring service.
    *
    * @param processes The claimed processes
-   * @param workflowTaskWiring VanillaBP's registry, which answers whether a
+   * @param workflowTaskClaims VanillaBP's registry, which answers whether a
    *          <code>&#64;WorkflowService</code> claims a process
    * @param publisher The extension, which is told the user tasks of every wired model. It is
    *          resolved when the first model is wired
@@ -70,10 +70,10 @@ public class OperatonCockpitAutoConfiguration {
   @Bean
   public ExtensionWiringService<BpmnModelInstance, OperatonProcessingContext> businessCockpitOperatonWiringService(
       final OperatonWorkflowProcesses processes,
-      final WorkflowTaskWiring workflowTaskWiring,
+      final WorkflowTaskClaims workflowTaskClaims,
       final ObjectProvider<BusinessCockpitEventPublisher> publisher) {
 
-    return new OperatonCockpitWiring(processes, workflowTaskWiring, publisher::getObject);
+    return new OperatonCockpitWiring(processes, workflowTaskClaims, publisher::getObject);
 
   }
 
@@ -97,7 +97,7 @@ public class OperatonCockpitAutoConfiguration {
   @Bean
   public OperatonCockpitCustomizer businessCockpitOperatonEngineCustomizer(
       final OperatonWorkflowProcesses processes,
-      final NameClashAvoidanceSupport scoping,
+      final IdentifierScoping scoping,
       final ObjectProvider<OperatonEngineFacts> engines,
       final ObjectProvider<BusinessCockpitEventPublisher> publisher) {
 

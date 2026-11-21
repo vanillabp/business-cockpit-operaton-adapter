@@ -45,24 +45,13 @@
       <artifactId>operaton-adapter-spring-boot</artifactId>
     </dependency>
     <dependency>
-      <!-- VanillaBP's resolved configuration, which is where this module reads the configured
-        adapter ids from; it arrives transitively as well, and is declared because the
-        auto-configuration and the bean registrar compile against it -->
-      <groupId>io.vanillabp.adapter</groupId>
-      <artifactId>migration-adapter</artifactId>
-    </dependency>
-    <dependency>
       <!-- the platform's own registrar support, which answers which adapter ids of a type this
-        application configured; it arrives transitively as well, and is declared because the bean
-        registrar compiles against it -->
+        application configured. The bean registrar asks it while beans are registered, before
+        VanillaBpSettings exists as a bean. The platform's decision allows this one call. It
+        arrives transitively as well, and is declared because the bean registrar compiles
+        against it -->
       <groupId>io.vanillabp</groupId>
       <artifactId>vanillabp-spring-boot-integration</artifactId>
-    </dependency>
-    <dependency>
-      <!-- the adapter SPI, for the name-clash avoidance this module hands the customizer: it
-        arrives transitively as well, and is declared because the auto-configuration compiles against it -->
-      <groupId>io.vanillabp</groupId>
-      <artifactId>vanillabp-adapter-spi</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -100,4 +89,36 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- the parent's rule, without the Spring Boot integration. This module still declares
+          it, and the comment at the dependency says why -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>an-extension-depends-on-the-extension-spi-alone</id>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes combine.self="override">
+                    <exclude>io.vanillabp.adapter:migration-adapter:*:*:compile</exclude>
+                    <exclude>io.vanillabp:vanillabp-adapter-spi:*:*:compile</exclude>
+                    <exclude>io.vanillabp:vanillabp-quarkus-integration:*:*:compile</exclude>
+                    <exclude>io.vanillabp.adapter:migration-adapter:*:*:provided</exclude>
+                    <exclude>io.vanillabp:vanillabp-adapter-spi:*:*:provided</exclude>
+                    <exclude>io.vanillabp:vanillabp-quarkus-integration:*:*:provided</exclude>
+                    <exclude>io.vanillabp.adapter:migration-adapter:*:*:runtime</exclude>
+                    <exclude>io.vanillabp:vanillabp-adapter-spi:*:*:runtime</exclude>
+                    <exclude>io.vanillabp:vanillabp-quarkus-integration:*:*:runtime</exclude>
+                  </excludes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
