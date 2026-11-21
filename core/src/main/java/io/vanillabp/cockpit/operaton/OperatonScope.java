@@ -2,7 +2,7 @@ package io.vanillabp.cockpit.operaton;
 
 import java.util.function.Supplier;
 
-import io.vanillabp.integration.adapter.spi.NameClashAvoidanceSupport;
+import io.vanillabp.integration.spi.IdentifierScoping;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 
 /**
@@ -31,7 +31,7 @@ public final class OperatonScope {
 
   private final String adapterId;
 
-  private final NameClashAvoidanceSupport scoping;
+  private final IdentifierScoping scoping;
 
   private final Supplier<OperatonEngineFacts> engine;
 
@@ -44,7 +44,7 @@ public final class OperatonScope {
    */
   public OperatonScope(
       final String adapterId,
-      final NameClashAvoidanceSupport scoping,
+      final IdentifierScoping scoping,
       final Supplier<OperatonEngineFacts> engine) {
 
     this.adapterId = adapterId;
@@ -121,7 +121,7 @@ public final class OperatonScope {
       final String workflowModuleId,
       final String bpmnProcessId) {
 
-    return NameClashAvoidanceSupport
+    return IdentifierScoping
         .scopedProcessId(scoping, workflowModuleId, bpmnProcessId, adapterId);
 
   }

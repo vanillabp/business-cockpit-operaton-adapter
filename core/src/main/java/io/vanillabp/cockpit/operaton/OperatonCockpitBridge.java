@@ -28,8 +28,8 @@ import io.vanillabp.cockpit.extension.spi.UserTaskDetailsPrefill;
 import io.vanillabp.cockpit.extension.spi.UserTaskReference;
 import io.vanillabp.cockpit.extension.spi.WorkflowDetailsPrefill;
 import io.vanillabp.cockpit.extension.spi.WorkflowReference;
-import io.vanillabp.integration.adapter.spi.workflowtask.MultiInstanceValue;
 import io.vanillabp.integration.extension.spi.handler.HandlerMultiInstance;
+import io.vanillabp.integration.spi.workflowtask.MultiInstanceIteration;
 import io.vanillabp.operaton.OperatonAdapter;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 import io.vanillabp.operaton.api.OperatonMultiInstances;
@@ -678,7 +678,7 @@ public class OperatonCockpitBridge implements BusinessCockpitBpmsBridge {
    * @return The scopes, keyed by BPMN element id
    */
   private static Map<String, HandlerMultiInstance> multiInstancesOf(
-      final Map<String, MultiInstanceValue> scopes) {
+      final Map<String, ? extends MultiInstanceIteration> scopes) {
 
     final var outermostFirst = new LinkedHashMap<String, HandlerMultiInstance>();
     scopes

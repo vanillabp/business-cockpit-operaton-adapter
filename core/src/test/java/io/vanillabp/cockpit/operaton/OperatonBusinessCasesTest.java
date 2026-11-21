@@ -20,7 +20,7 @@ import org.operaton.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 
 import io.vanillabp.integration.adapter.migration.config.MigrationAdapterProperties;
 import io.vanillabp.integration.adapter.migration.scoping.NameClashAvoidanceService;
-import io.vanillabp.integration.adapter.spi.workflowtask.WorkflowTaskWiring;
+import io.vanillabp.integration.spi.workflowtask.WorkflowTaskClaims;
 import io.vanillabp.integration.test.utils.SuppressOutputExtension;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 import io.vanillabp.operaton.wiring.OperatonTaskRegistry;
@@ -58,7 +58,7 @@ public class OperatonBusinessCasesTest {
     processes.register(MODULE_ID, ORDER);
     processes.register(MODULE_ID, SHIPPING);
     processes.register(MODULE_ID, PACKING);
-    final var core = mock(WorkflowTaskWiring.class);
+    final var core = mock(WorkflowTaskClaims.class);
     for (final var calling : Set.of(ORDER, SHIPPING, PACKING)) {
       for (final var called : Set.of(ORDER, SHIPPING, PACKING)) {
         when(core.workflowsShareTheWorkflowAggregate(MODULE_ID, calling, called))

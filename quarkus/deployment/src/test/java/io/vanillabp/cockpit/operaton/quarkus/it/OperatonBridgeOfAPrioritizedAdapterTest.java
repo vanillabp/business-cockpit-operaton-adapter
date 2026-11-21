@@ -22,7 +22,7 @@ import jakarta.inject.Inject;
  * the second one. This repository used to miss such an id. Filtering the configured adapter TYPES
  * finds nothing for it. So the adapter built its engine, the cockpit built no bridge, and no event
  * of that engine reached the cockpit. That is why VanillaBP answers which ids belong to an
- * adapter type ({@code MigrationAdapterProperties#adapterIdsOfType}), and not this repository.
+ * adapter type ({@code VanillaBpSettings#adapterIdsOfType}), and not this repository.
  */
 @ExtendWith(SuppressOutputExtension.class)
 @SuppressOutputExtension.SuppressBackgroundOutput

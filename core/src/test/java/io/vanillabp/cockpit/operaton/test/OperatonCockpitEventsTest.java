@@ -38,7 +38,7 @@ import io.vanillabp.cockpit.operaton.OperatonWorkflowHistoryHandler;
 import io.vanillabp.cockpit.operaton.OperatonWorkflowProcesses;
 import io.vanillabp.integration.adapter.migration.config.MigrationAdapterProperties;
 import io.vanillabp.integration.adapter.migration.scoping.NameClashAvoidanceService;
-import io.vanillabp.integration.adapter.spi.workflowtask.WorkflowTaskWiring;
+import io.vanillabp.integration.spi.workflowtask.WorkflowTaskClaims;
 import io.vanillabp.integration.test.utils.SuppressOutputExtension;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 import io.vanillabp.operaton.wiring.OperatonProcessVersions;
@@ -362,10 +362,10 @@ public class OperatonCockpitEventsTest {
 
     final var unclaimed = "UnclaimedProcess";
     final var claimed = "AnotherClaimedProcess";
-    final var workflowTaskWiring = mock(WorkflowTaskWiring.class);
-    when(workflowTaskWiring.isClaimedByAWorkflowService(MODULE_ID, claimed)).thenReturn(true);
-    when(workflowTaskWiring.isClaimedByAWorkflowService(MODULE_ID, unclaimed)).thenReturn(false);
-    final var wiring = new OperatonCockpitWiring(processes, workflowTaskWiring, () -> publisher);
+    final var workflowTaskClaims = mock(WorkflowTaskClaims.class);
+    when(workflowTaskClaims.isClaimedByAWorkflowService(MODULE_ID, claimed)).thenReturn(true);
+    when(workflowTaskClaims.isClaimedByAWorkflowService(MODULE_ID, unclaimed)).thenReturn(false);
+    final var wiring = new OperatonCockpitWiring(processes, workflowTaskClaims, () -> publisher);
 
     wiring.wireBpmn(MODULE_ID, "unclaimed.bpmn", unclaimed, null, null);
     wiring.wireBpmn(MODULE_ID, "claimed.bpmn", claimed, null, null);
@@ -389,9 +389,9 @@ public class OperatonCockpitEventsTest {
   @DisplayName("Wiring a model names its user tasks to the extension, with the values the listener reports")
   public void wiringNamesTheUserTasksOfTheProcess() {
 
-    final var workflowTaskWiring = mock(WorkflowTaskWiring.class);
-    when(workflowTaskWiring.isClaimedByAWorkflowService(MODULE_ID, BPMN_PROCESS_ID)).thenReturn(true);
-    final var wiring = new OperatonCockpitWiring(processes, workflowTaskWiring, () -> publisher);
+    final var workflowTaskClaims = mock(WorkflowTaskClaims.class);
+    when(workflowTaskClaims.isClaimedByAWorkflowService(MODULE_ID, BPMN_PROCESS_ID)).thenReturn(true);
+    final var wiring = new OperatonCockpitWiring(processes, workflowTaskClaims, () -> publisher);
     // the adapter put the workflow module in front of the id while it prepared the model
     final var model = Bpmn
         .createExecutableProcess(MODULE_ID
@@ -427,7 +427,7 @@ public class OperatonCockpitEventsTest {
     final var calledDefinitionId = "ACalledProcess:2:9";
     processes.register(MODULE_ID, called);
     // the called process works on the caller's aggregate, so the task belongs to the caller's case
-    final var core = mock(WorkflowTaskWiring.class);
+    final var core = mock(WorkflowTaskClaims.class);
     when(core.workflowsShareTheWorkflowAggregate(anyString(), anyString(), anyString())).thenReturn(true);
     processes.rememberTheCore(core);
     final var versions = new OperatonProcessVersions(

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import io.vanillabp.cockpit.extension.spi.BusinessCockpitEventPublisher;
 import io.vanillabp.cockpit.extension.wiring.BusinessCockpitWiringService;
-import io.vanillabp.integration.adapter.spi.NameClashAvoidanceSupport;
-import io.vanillabp.integration.adapter.spi.workflowtask.WorkflowTaskWiring;
 import io.vanillabp.integration.extension.spi.ExtensionWiringService;
+import io.vanillabp.integration.spi.IdentifierScoping;
+import io.vanillabp.integration.spi.workflowtask.WorkflowTaskClaims;
 import io.vanillabp.operaton.OperatonProcessingContext;
 import io.vanillabp.operaton.api.OperatonTaskDefinitions;
 
@@ -50,7 +50,7 @@ public class OperatonCockpitWiring implements ExtensionWiringService<BpmnModelIn
 
   private final OperatonWorkflowProcesses processes;
 
-  private final WorkflowTaskWiring workflowTaskWiring;
+  private final WorkflowTaskClaims workflowTaskClaims;
 
   private final Supplier<BusinessCockpitEventPublisher> publisher;
 
@@ -59,20 +59,20 @@ public class OperatonCockpitWiring implements ExtensionWiringService<BpmnModelIn
    * store.
    *
    * @param processes Where the claimed processes are remembered
-   * @param workflowTaskWiring VanillaBP's registry of what the application declared, which
+   * @param workflowTaskClaims VanillaBP's registry of what the application declared, which
    *          answers whether a <code>&#64;WorkflowService</code> claims a process
    * @param publisher The extension, which is told the user tasks of every wired model
    */
   public OperatonCockpitWiring(
       final OperatonWorkflowProcesses processes,
-      final WorkflowTaskWiring workflowTaskWiring,
+      final WorkflowTaskClaims workflowTaskClaims,
       final Supplier<BusinessCockpitEventPublisher> publisher) {
 
     this.processes = processes;
-    this.workflowTaskWiring = workflowTaskWiring;
+    this.workflowTaskClaims = workflowTaskClaims;
     this.publisher = publisher;
     // the reports ask the core later which called process shares its caller's aggregate
-    processes.rememberTheCore(workflowTaskWiring);
+    processes.rememberTheCore(workflowTaskClaims);
 
   }
 
@@ -108,7 +108,7 @@ public class OperatonCockpitWiring implements ExtensionWiringService<BpmnModelIn
     // the core hands over every process of the file, also one the module only deploys for
     // somebody else. Such a process has no workflow aggregate, so the cockpit has no case to
     // show for it. See decision 14 in the Camunda 7 extension's DECISIONS.md
-    if (!workflowTaskWiring.isClaimedByAWorkflowService(workflowModuleId, bpmnProcessId)) {
+    if (!workflowTaskClaims.isClaimedByAWorkflowService(workflowModuleId, bpmnProcessId)) {
       logger
           .debug(
               "Operaton: the Business Cockpit reports nothing about BPMN process '{}' of workflow module '{}' (file '{}'): no @WorkflowService of this application claims it",
@@ -152,7 +152,7 @@ public class OperatonCockpitWiring implements ExtensionWiringService<BpmnModelIn
     if (model == null) {
       return null;
     }
-    final var scopedSuffix = NameClashAvoidanceSupport.SEPARATOR + bpmnProcessId;
+    final var scopedSuffix = IdentifierScoping.SEPARATOR + bpmnProcessId;
     return model
         .getModelElementsByType(Process.class)
         .stream()
