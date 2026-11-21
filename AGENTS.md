@@ -52,6 +52,17 @@ in, and the order they run in, is described once for everybody in
 [`ADAPTER-AUTHORS.md`](https://github.com/vanillabp/adapter-platform-integration/blob/main/migration-adapter/ADAPTER-AUTHORS.md)
 of the platform repository.
 
+What the extension reads from VanillaBP comes from the extension SPI and the integration SPI:
+`VanillaBpSettings` for the configured adapters, `IdentifierScoping` for how an engine spells an id,
+`WorkflowTaskClaims` for what the application declared, and `MultiInstanceIteration` for a
+multi-instance element. The core of VanillaBP (`migration-adapter`), the adapter SPI and the
+platform integrations are test dependencies only. An enforcer rule in the root `pom.xml` stops the
+build when a module declares one of them in another scope. The rule holds for `migration-tests` as
+well. One declaration is left on purpose, and its POM says why: the Spring Boot module calls
+`AdapterBeanRegistrarSupport` of the Spring Boot integration. The rule checks only what a module
+declares. The Operaton adapter brings the adapter SPI and its platform integration along, and that
+is its right as a BPMS adapter.
+
 What this extension does with the pipeline belongs to the Business Cockpit, and the cockpit's own
 repository is [vanillabp/business-cockpit](https://github.com/vanillabp/business-cockpit). The
 platform-neutral half of the extension lives there as `extensions-commons` and is consumed here as
