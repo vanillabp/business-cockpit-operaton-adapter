@@ -11,10 +11,10 @@ import io.vanillabp.cockpit.operaton.OperatonCockpitBridge;
 import io.vanillabp.cockpit.operaton.OperatonCockpitCustomizer;
 import io.vanillabp.cockpit.operaton.OperatonCockpitWiring;
 import io.vanillabp.cockpit.operaton.OperatonWorkflowProcesses;
-import io.vanillabp.integration.adapter.migration.config.MigrationAdapterProperties;
-import io.vanillabp.integration.adapter.spi.NameClashAvoidanceSupport;
-import io.vanillabp.integration.adapter.spi.workflowtask.WorkflowTaskWiring;
 import io.vanillabp.integration.extension.spi.ExtensionWiringService;
+import io.vanillabp.integration.extension.spi.settings.VanillaBpSettings;
+import io.vanillabp.integration.spi.IdentifierScoping;
+import io.vanillabp.integration.spi.workflowtask.WorkflowTaskClaims;
 import io.vanillabp.operaton.OperatonAdapter;
 import io.vanillabp.operaton.OperatonProcessingContext;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
@@ -63,7 +63,7 @@ public class OperatonCockpitProducer {
    * Produces this extension's wiring service.
    *
    * @param processes The claimed processes
-   * @param workflowTaskWiring VanillaBP's registry, which answers whether a
+   * @param workflowTaskClaims VanillaBP's registry, which answers whether a
    *          <code>&#64;WorkflowService</code> claims a process
    * @param publisher The extension, which is told the user tasks of every wired model. It is
    *          resolved when the first model is wired
@@ -75,10 +75,10 @@ public class OperatonCockpitProducer {
   @Unremovable
   public ExtensionWiringService<BpmnModelInstance, OperatonProcessingContext> businessCockpitOperatonWiringService(
       final OperatonWorkflowProcesses processes,
-      final WorkflowTaskWiring workflowTaskWiring,
+      final WorkflowTaskClaims workflowTaskClaims,
       final Instance<BusinessCockpitEventPublisher> publisher) {
 
-    return new OperatonCockpitWiring(processes, workflowTaskWiring, publisher::get);
+    return new OperatonCockpitWiring(processes, workflowTaskClaims, publisher::get);
 
   }
 
@@ -100,7 +100,7 @@ public class OperatonCockpitProducer {
   @Unremovable
   public OperatonCockpitCustomizer businessCockpitOperatonEngineCustomizer(
       final OperatonWorkflowProcesses processes,
-      final NameClashAvoidanceSupport scoping,
+      final IdentifierScoping scoping,
       final Instance<List<OperatonEngineFacts>> engines,
       final Instance<BusinessCockpitEventPublisher> publisher) {
 
@@ -117,7 +117,7 @@ public class OperatonCockpitProducer {
     * collects both shapes, the same way VanillaBP's own Quarkus integration collects the adapter
     * deployment services of a BPMS adapter.
    * <p>
-    * WHICH adapter ids those are is {@code MigrationAdapterProperties#adapterIdsOfType}, the same
+    * WHICH adapter ids those are is {@code VanillaBpSettings#adapterIdsOfType}, the same
     * answer the Spring Boot half reads through the platform's registrar support. Filtering the
     * configured types is not that answer. An id named in <code>prioritized-adapters</code> needs
     * no section of its own, and an application which configured nothing at all has the id the
@@ -135,7 +135,7 @@ public class OperatonCockpitProducer {
   @Singleton
   @Unremovable
   public List<BusinessCockpitBpmsBridge> businessCockpitOperatonBridges(
-      final MigrationAdapterProperties properties,
+      final VanillaBpSettings properties,
       final OperatonQuarkusEngineRegistry engines,
       final OperatonCockpitCustomizer customizer,
       final OperatonWorkflowProcesses processes) {

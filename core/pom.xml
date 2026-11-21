@@ -51,12 +51,6 @@
       <artifactId>vanillabp-extension-spi</artifactId>
     </dependency>
     <dependency>
-      <!-- the adapter SPI, for the name-clash avoidance an adapter is handed: this module asks
-        it what an engine calls a process rather than building the name itself -->
-      <groupId>io.vanillabp</groupId>
-      <artifactId>vanillabp-adapter-spi</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>

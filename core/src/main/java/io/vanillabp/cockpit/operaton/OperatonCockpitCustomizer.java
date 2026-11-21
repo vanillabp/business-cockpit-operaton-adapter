@@ -17,7 +17,7 @@ import org.operaton.bpm.engine.impl.history.handler.HistoryEventHandler;
 
 import io.vanillabp.cockpit.extension.spi.BusinessCockpitEventPublisher;
 import io.vanillabp.cockpit.extension.spi.EventTransaction;
-import io.vanillabp.integration.adapter.spi.NameClashAvoidanceSupport;
+import io.vanillabp.integration.spi.IdentifierScoping;
 import io.vanillabp.operaton.api.OperatonEngineFacts;
 import io.vanillabp.operaton.engine.OperatonEngineCustomizer;
 
@@ -58,7 +58,7 @@ public class OperatonCockpitCustomizer implements OperatonEngineCustomizer {
 
   private final OperatonWorkflowProcesses processes;
 
-  private final NameClashAvoidanceSupport scoping;
+  private final IdentifierScoping scoping;
 
   private final Supplier<List<OperatonEngineFacts>> engines;
 
@@ -88,7 +88,7 @@ public class OperatonCockpitCustomizer implements OperatonEngineCustomizer {
    */
   public OperatonCockpitCustomizer(
       final OperatonWorkflowProcesses processes,
-      final NameClashAvoidanceSupport scoping,
+      final IdentifierScoping scoping,
       final Supplier<List<OperatonEngineFacts>> engines,
       final Supplier<BusinessCockpitEventPublisher> publisher) {
 
