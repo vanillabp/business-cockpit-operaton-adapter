@@ -56,12 +56,14 @@ jobs:
           java-version: 25.0.5+8
           distribution: temurin
           cache: maven
+      # the cache above can hold old snapshots of our own, so they go and Maven fetches the newest
+      - uses: ./.github/actions/forget-cached-snapshots
       # 'install' and not 'install verify': install already runs every phase verify has,
       # so naming both makes Maven walk two lifecycles per module. The tests skip their
       # second run, the compiler does not, and every javac warning is reported twice. It
       # stays 'install' because the Quarkus tests load modules from the local repository.
       - name: Build and test
-        run: mvn -s .github/maven/settings.xml ${VBP_SNAPSHOTS_PROFILE} --batch-mode --no-transfer-progress --update-snapshots install
+        run: mvn -s .github/maven/settings.xml ${VBP_SNAPSHOTS_PROFILE} --batch-mode --no-transfer-progress install
       # what a failing test printed is in these reports, and for a test booting its
       # application in a forked JVM it is ONLY in that application's own log file
       - name: Upload the test reports of a failed build
