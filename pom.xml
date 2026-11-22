@@ -346,7 +346,8 @@
           brings the adapter SPI and its platform integration along on purpose. Banning them
           transitively would ban the adapter this extension plugs into.
           The Spring Boot module still declares the Spring Boot integration and takes it out
-          of the ban in its own POM, which says why. See DECISIONS.pending/2191.md. -->
+          of the ban in its own POM, which says why. See decision 21 in the Camunda 7 extension's
+          DECISIONS.md. -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.7.0</version>
