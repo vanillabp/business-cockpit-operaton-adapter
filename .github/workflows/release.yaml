@@ -10,7 +10,7 @@ name: Release
   workflow_dispatch:
     inputs:
       release_version:
-        description: "Version to release (e.g. 0.9.0)"
+        description: "Version to release (e.g. 1.0.0)"
         required: true
       train:
         description: "Release train, e.g. 2.0. Empty: this release uploads to Maven Central itself. Set: the bundle is kept for release-train.yaml in maven-release-parent. Release the repositories of a train in the order of their dependencies: each release reads the bundles of the releases before it."

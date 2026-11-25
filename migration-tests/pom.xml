@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.vanillabp.businesscockpit</groupId>
     <artifactId>businesscockpit-operaton-adapter-parent</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>businesscockpit-operaton-adapter-migration-tests</artifactId>
@@ -44,7 +44,7 @@
     <!-- the Camunda 7 adapter and the Business Cockpit extension for it, which the test runs
          next to this one -->
     <camunda7-adapter.version>2.0.0-SNAPSHOT</camunda7-adapter.version>
-    <camunda7-extension.version>0.9.0-SNAPSHOT</camunda7-extension.version>
+    <camunda7-extension.version>1.0.0-SNAPSHOT</camunda7-extension.version>
   </properties>
 
   <dependencies>
